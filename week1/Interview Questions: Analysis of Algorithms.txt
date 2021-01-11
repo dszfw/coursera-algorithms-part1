@@ -1,0 +1,90 @@
+============================= Task 1 =============================
+Using WeightedQuickUnionPathCompression as the base algorithm and adding a few improvements.
+
+--- log file ---
+timestamp_1     1 - 2
+timestamp_2     2 - 3
+...
+timestamp_M     123 - N
+
+
+members = array[0..N-1]     - members of a given social network
+sz = array[0..N-1]          - sz[i] = number of sites in tree rooted at i
+head                        - root node of the tree, e.g. members[0]
+
+union(x, y)                 - forming friendship between two members
+connected(x, y)             - true if X member have "friendship chain" to Y member
+
+
+case of new "friendship chain to head" relation between two members
+
+counter = 0
+timestamp1 = read first timestamp
+timestamp = 0
+
+while (counter < N) {
+    0. read a line from log file
+       x, y, timestamp
+    1. xConnected = connected(x, head)
+       yConnected = connected(y, head)
+    2. union(x, y)
+    3. if (!xConnected && !yConnected) continue
+    4. if (!xConnected && connected(x, head)) counter += sz[x]
+       if (!yConnected && connected(y, head)) counter += sz[y]
+}
+time = timestamp - timestamp1
+
+
+WeightedQuickUnionPathCompression algorithm used for steps 1,2,3
+
+
+Algorithm costs:    M log2*(N)
+
+
+============================= Task 2 =============================
+Using WeightedQuickUnionPathCompression as the base algorithm and adding a few improvements.
+
+parent = array[0..N-1]      - parent[i] = parent of i
+size = array[0..N-1]        - size[i] = number of sites in tree rooted at i
++ maxes = array[0..N-1]     - maxes[i] = max value in a subtree with i as a head
+root(p)                     - root() method from WeightedQuickUnionPathCompression algorithm, with log2*N costs
+
+Add "track max value" statements to 'union' method, similar as tracking sizes in size[] array
+    
+    public void union(int p, int q) {
+        ...
+        ...
++       int parentNode
+        // make smaller root point to larger one
+        if (size[rootP] < size[rootQ]) {
+            parent[rootP] = rootQ;
++           parentNode = rootQ;
+            size[rootQ] += size[rootP];
+        }
+        else {
+            parent[rootQ] = rootP;
++           parentNode = rootP;
+            size[rootP] += size[rootQ];
+        }
+
++       // track max value
++       maxes[parentNode] = maxes[rootQ] > maxes[rootP] ? maxes[rootQ] : maxes[rootP]
+        ...
+        ...
+    }
+
+Add find method with log* complexity
+
++    public int find(int p) {
++        // using root() method from WeightedQuickUnionPathCompression algorithm
++        int parentNode = root()
++        return maxes[parentNode];
++    }
+
+
+Algorithm costs:    logarithmic
+
+
+============================= Task 3 =============================
+Using "Binary search tree" algorithm for designing the described data type.
+Remove and find operations cost logN computation time in the average case. Remember the right child (successor) of a removing node as an additional improvement. Thus we can call "findSuccessor" method with constant time costs cause a successor already stored in some cache variable.

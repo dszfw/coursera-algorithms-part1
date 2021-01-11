@@ -1,0 +1,104 @@
+============================= Question 1 =============================
+Intersection of two sets. Given two arrays a[] and b[], each containing n distinct 2D points in the plane, design a subquadratic algorithm to count the number of points that are contained both in array a[] and array b[].
+
+Point
+    int x
+    int y
+
+Point[] a;
+Point[] b;
+
+sort(a) and sort(b) by x and by y then, using some effective sort algorithm, e.g. shellsort
+e.g.
+sort({(1, 2), (3, 1), (1, 5), (15, 3), (3, 0)})
+= {(1, 2), (1, 5), (3, 0), (3, 1), (15, 3)}
+
+counter = 0
+for (i = 0; i < N; i++) {
+    a[i]
+    x = a[i].x
+    y = a[i].y
+    for (j = 0; j < N; j++) {
+        if (b[j].x > x) break
+        if (b[j].x < x) continue
+        if (b[j].y > y) break
+        if (b[j].y < y) continue
+        counter++
+    }
+}
+
+
+============================= Question 2 =============================
+Permutation. Given two integer arrays of size N, design a subquadratic algorithm to determine whether one is a permutation of the other. That is, do they contain exactly the same entries but, possibly, in a different order.
+
+int[] a
+int[] b
+
+sort(a)
+sort(b)
+
+boolean isPermutation(int[] a, int[] b) {
+    for (i = 0; i < N; i++) {
+        if (a[i] != b[i]) return false;
+    }
+    return true;
+}
+
+
+============================= Question 3 =============================
+Dutch national flag. Given an array of N buckets, each containing a red, white, or blue pebble, sort them by color. The allowed operations are:
+swap(i,j):  swap the pebble in bucket i with the pebble in bucket j.
+color(i): determine the color of the pebble in bucket i.
+The performance requirements are as follows:
+
+At most n calls to color().
+At most n calls to swap().
+Constant extra space.
+
+RED     = 1
+WHITE   = 2
+BLUE    = 3
+
+Peeble[] pebbles
+int[] colors    - extra space
+
+int redTotal
+int whiteTotal
+int blueTotal
+
+1) populate colors array and count pebbles by color
+for (i = 0; i < N; i++) {
+    colors[i] = color(i)
+    if (colors[i] == RED) redTotal++
+    else if (colors[i] == WHITE) whiteTotal++
+    else blueTotal++
+}
+
+2) sort all red pebbles
+int redCounter
+for (i = 0; i < redTotal; i++) {
+    if (redCounter == redTotal) {
+        break
+    }
+    if (colors[i] == RED) {
+        redCounter++
+        continue
+    }
+    for (j = i + 1; j < N; j++) {
+        if (colors[j] == RED) {
+            redCounter++
+            swap(i, j)
+            break
+        }
+    }
+}
+
+3) sort all white pebbles
+int whiteCounter
+for (i = redTotal; i < whiteTotal; i++) {
+...
+...
+// similar code as above
+}
+
+4) blue pebbles already sorted
