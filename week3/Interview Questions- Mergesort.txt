@@ -1,0 +1,11 @@
+============================= Question 1 =============================
+Merging with smaller auxiliary array. Suppose that the subarray a[0] to a[n−1] is sorted and the subarray a[n] a[2*n−1] is sorted. How can you merge the two subarrays so that a[0] to a[2*n−1] is sorted using an auxiliary array of length n (instead of 2n)?
+
+1. copy first array a[0..n-1)] to auxiliary array aux[0..n-1]
+2. mergesort a[2n-1] and aux[0..n-1] to a[] from index = 0  to 2n-1 (overwriting)
+
+============================= Question 2 =============================
+enhanced mergesort with invesrion counting
+
+
+============================= Question 3 =============================
