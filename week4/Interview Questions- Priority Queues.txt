@@ -1,0 +1,93 @@
+============================= Question 1 =============================
+Dynamic median.
+Design a data type that supports insert in logarithmic time, find-the-median in constant time, and remove-the-median in logarithmic time. If the number of keys in the data type is even, find/remove the lower median.
+
+1. sort the array a[]
+2. get the median m of the array and split it into two halves
+3. build two heaps, min-heap and max-heap based on these parts of the array
+4. insert a new element in the array using the following rule "greater element than median into min-heap, smaller one into the max-heap"
+5. sizes of two heaps can differ only by 1
+6. If the size of one heap greater than the other then move the head element of this heap to other (remove and insert then).
+7. median element is the head element of the heap with size is greater by 1 than the other heap
+8. use a standard implementation of the swim (heap-up) and sink (heap-down) methods
+
+
+============================= Question 2 =============================
+Randomized priority queue.
+Describe how to add the methods sample() and delRandom() to our binary heap implementation. The two methods return a key that is chosen uniformly at random among the remaining keys, with the latter method also removing that key. The sample() method should take constant time; the delRandom() method should take logarithmic time. Do not worry about resizing the underlying array.
+
+
+Key[] heap
+
+sample() {
+    return heap[getRandom(heap.length)]
+}
+
+delRandom() {
+    int i = getRandom(heap.length)
+    Key key = heap[i]
+    int lastElementIndex = heap.length - 1
+    heap[i] = heap[lastElementIndex]
+    heap[lastElementIndex] = null // or resize the array if needed
+    sink(heap[i])
+}
+
+
+============================= Question 3 =============================
+Taxicab numbers.
+
+import edu.princeton.cs.algs4.MinPQ;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class Taxicab {
+
+    public static void main(String[] args) {
+        int n = 100;
+        MinPQ<SumOfCubes> priorityQueue = new MinPQ<>();
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = i; j <= n; j++) {
+                priorityQueue.insert(new SumOfCubes(i, j));
+            }
+        }
+
+        ArrayList<SumOfCubes[]> taxicabs = new ArrayList<>();
+        SumOfCubes prevMin = new SumOfCubes(0, 0);
+        while (!priorityQueue.isEmpty()) {
+            SumOfCubes min = priorityQueue.delMin();
+            if (min.compareTo(prevMin) == 0) {
+                taxicabs.add(new SumOfCubes[] { prevMin, min });
+            }
+            prevMin = min;
+        }
+
+        taxicabs.forEach(sum -> System.out.println(Arrays.toString(sum)));
+
+    }
+
+    private static final class SumOfCubes implements Comparable<SumOfCubes> {
+        int i;
+        int j;
+        int sum;
+
+        public SumOfCubes(int i, int j) {
+            this.i = i;
+            this.j = j;
+            this.sum = i * i * i + j * j * j;
+        }
+
+        public int compareTo(SumOfCubes other) {
+            return sum - other.sum;
+        }
+
+        public String toString() {
+            return "[" + i +
+                    ", " + j +
+                    ", sum=" + sum +
+                    ']';
+        }
+    }
+
+}

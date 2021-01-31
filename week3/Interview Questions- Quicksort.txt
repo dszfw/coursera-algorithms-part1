@@ -1,0 +1,12 @@
+============================= Question 1 =============================
+Use modified quicksort for sorting nuts and bolts.
+
+1. choose an initial bolt
+2. quicksort array of nuts
+
+The same for bolts: choose an initial nut and quicksort bolts array against this nut.
+
+============================= Question 2 =============================
+
+
+============================= Question 3 =============================
